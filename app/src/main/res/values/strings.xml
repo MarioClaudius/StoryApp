@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StoryApp</string>
+    <string name="storyapp_logo">StoryApp Logo</string>
 </resources>
