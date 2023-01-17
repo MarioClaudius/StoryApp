@@ -1,13 +1,13 @@
 package android.marc.com.storyapp.activity.splash
 
-import android.marc.com.storyapp.model.UserModel
-import android.marc.com.storyapp.model.UserPreference
+import android.marc.com.storyapp.model.LoginSession
+import android.marc.com.storyapp.model.SessionPreference
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 
-class SplashViewModel(private val pref: UserPreference): ViewModel() {
-    fun getUser(): LiveData<UserModel> {
-        return pref.getUser().asLiveData()
+class SplashViewModel(private val pref: SessionPreference): ViewModel() {
+    fun getSession(): LiveData<LoginSession> {
+        return pref.getSession().asLiveData()
     }
 }

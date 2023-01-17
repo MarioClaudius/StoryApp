@@ -6,7 +6,7 @@ import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.activity.login.LoginActivity
 import android.marc.com.storyapp.databinding.ActivityMainBinding
-import android.marc.com.storyapp.model.UserPreference
+import android.marc.com.storyapp.model.SessionPreference
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -34,11 +34,11 @@ class MainActivity : AppCompatActivity() {
     private fun setupViewModel() {
         mainViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore))
         )[MainViewModel::class.java]
 
-        mainViewModel.getUser().observe(this) { user ->
-            if (!user.isLogin) {
+        mainViewModel.getSession().observe(this) { session ->
+            if (session.userId.isEmpty() && session.name.isEmpty() && session.token.isEmpty()) {
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 finish()
             }

@@ -6,18 +6,22 @@ import android.marc.com.storyapp.activity.main.MainActivity
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.databinding.ActivityLoginBinding
 import android.marc.com.storyapp.activity.register.RegisterActivity
-import android.marc.com.storyapp.model.UserModel
-import android.marc.com.storyapp.model.UserPreference
+import android.marc.com.storyapp.api.ApiConfig
+import android.marc.com.storyapp.model.*
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -25,7 +29,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var user: UserModel
+    private lateinit var session: LoginSession
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +52,33 @@ class LoginActivity : AppCompatActivity() {
                 password.isEmpty() -> {
                     binding.edLoginPassword.error = "Password is empty"
                 }
-                email != user.email || password != user.password-> {
-                    binding.edLoginEmail.error = "Email or password is incorrect"
-                }
                 else -> {
-                    loginViewModel.login()
-                    Log.d("BTN LOGIN", "Email: $email, Password: $password")
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
-                    finish()
+                    val loginService = ApiConfig().getApiService().login(email, password)
+                    loginService.enqueue(object: Callback<LoginResponse>{
+                        override fun onResponse(
+                            call: Call<LoginResponse>,
+                            response: Response<LoginResponse>
+                        ) {
+                            if (response.isSuccessful) {
+                                val isError = response.body()?.error
+                                val session = response.body()?.loginSession
+                                if (session != null && !isError!!) {
+                                    loginViewModel.login(LoginSession(session.userId, session.name, session.token))
+                                    Log.d("BTN LOGIN", "Email: $email, Password: $password")
+                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@LoginActivity, "Session failed to be saved", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                            t.printStackTrace()
+                        }
+
+                    })
                 }
             }
         }
@@ -71,15 +92,11 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
-        loginViewModel.getUser().observe(this) { user ->
-            this.user = user
-            if (user.isLogin) {
-                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                finish()
-            }
+        loginViewModel.getSession().observe(this) { session ->
+            this.session = session
         }
     }
 
