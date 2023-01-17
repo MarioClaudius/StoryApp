@@ -31,7 +31,6 @@ class PasswordEditText: AppCompatEditText {
     }
 
     private fun init() {
-        this.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         this.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 

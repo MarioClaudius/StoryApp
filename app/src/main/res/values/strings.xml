@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">StoryApp</string>
     <string name="storyapp_logo">StoryApp Logo</string>
+    <string name="name_hint">Name</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="add_story">Add Story</string>
+    <string name="log_out">Log Out</string>
 </resources>

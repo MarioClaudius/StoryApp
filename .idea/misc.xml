@@ -5,8 +5,9 @@
       <map>
         <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/rounded_button.xml" value="0.199" />
         <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/drawable/rounded_edittext.xml" value="0.124" />
-        <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_login.xml" value="0.264" />
-        <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_register.xml" value="0.25416666666666665" />
+        <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/AndroidStudioProjects/StoryApp/app/src/main/res/menu/main_menu.xml" value="0.253125" />
       </map>
     </option>
   </component>
