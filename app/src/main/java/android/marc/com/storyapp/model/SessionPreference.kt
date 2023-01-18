@@ -9,10 +9,16 @@ class SessionPreference private constructor(private val dataStore: DataStore<Pre
     fun getSession(): Flow<LoginSession> {
         return dataStore.data.map { preferences ->
             LoginSession(
-                preferences[SessionPreference.USER_ID_KEY] ?: "",
-                preferences[SessionPreference.NAME_KEY] ?: "",
-                preferences[SessionPreference.TOKEN_KEY] ?: "",
+                preferences[USER_ID_KEY] ?: "",
+                preferences[NAME_KEY] ?: "",
+                preferences[TOKEN_KEY] ?: "",
             )
+        }
+    }
+
+    fun getSessionToken(): Flow<String> {
+        return dataStore.data.map { preferences ->
+            preferences[TOKEN_KEY] ?: ""
         }
     }
 
