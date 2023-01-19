@@ -3,6 +3,7 @@ package android.marc.com.storyapp.api
 import android.marc.com.storyapp.model.BaseResponse
 import android.marc.com.storyapp.model.LoginResponse
 import android.marc.com.storyapp.model.StoryListResponse
+import android.marc.com.storyapp.model.StoryResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -18,4 +19,7 @@ interface ApiService {
 
     @GET("stories")
     fun getAllStories(@Query("page") page: Int?, @Query("size") size: Int?, @Query("location") location: Int? = 0, @Header("Authorization") auth: String) : Call<StoryListResponse>
+
+    @GET("stories/{id}")
+    fun getStoryDetail(@Path("id") id: String, @Header("Authorization") auth: String) : Call<StoryResponse>
 }

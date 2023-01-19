@@ -8,4 +8,7 @@
     <string name="register">Register</string>
     <string name="add_story">Add Story</string>
     <string name="log_out">Log Out</string>
+    <string name="story_image">Story Image</string>
+
+    <string name="story_creator">Created by %1$s</string>
 </resources>
