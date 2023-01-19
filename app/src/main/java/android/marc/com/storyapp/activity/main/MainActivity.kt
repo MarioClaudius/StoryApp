@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
+import android.marc.com.storyapp.activity.addstory.AddStoryActivity
 import android.marc.com.storyapp.activity.login.LoginActivity
 import android.marc.com.storyapp.activity.storydetail.StoryDetailActivity
 import android.marc.com.storyapp.adapter.StoryListAdapter
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId) {
             R.id.add_story -> {
+                startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
                 true
             }
             R.id.logout -> {
@@ -122,5 +124,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val STORY_ID_KEY_EXTRA = "story_id_key_extra"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mainViewModel.displayStoryList(null, null, null, auth)
     }
 }

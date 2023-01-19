@@ -1,5 +1,6 @@
 package android.marc.com.storyapp.activity
 
+import android.marc.com.storyapp.activity.addstory.AddStoryViewModel
 import android.marc.com.storyapp.activity.login.LoginViewModel
 import android.marc.com.storyapp.activity.main.MainViewModel
 import android.marc.com.storyapp.activity.splash.SplashViewModel
@@ -24,6 +25,9 @@ class ViewModelFactory(private val pref: SessionPreference) : ViewModelProvider.
             }
             modelClass.isAssignableFrom(StoryDetailViewModel::class.java) -> {
                 StoryDetailViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(AddStoryViewModel::class.java) -> {
+                AddStoryViewModel() as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

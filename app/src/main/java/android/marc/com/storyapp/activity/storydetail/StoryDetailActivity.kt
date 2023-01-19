@@ -1,7 +1,7 @@
 package android.marc.com.storyapp.activity.storydetail
 
 import android.content.Context
-import android.marc.com.storyapp.Helper.withDateFormat
+import android.marc.com.storyapp.helper.Helper.withDateFormat
 import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.activity.main.MainActivity

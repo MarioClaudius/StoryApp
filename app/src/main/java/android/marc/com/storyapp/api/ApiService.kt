@@ -4,6 +4,8 @@ import android.marc.com.storyapp.model.BaseResponse
 import android.marc.com.storyapp.model.LoginResponse
 import android.marc.com.storyapp.model.StoryListResponse
 import android.marc.com.storyapp.model.StoryResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -22,4 +24,14 @@ interface ApiService {
 
     @GET("stories/{id}")
     fun getStoryDetail(@Path("id") id: String, @Header("Authorization") auth: String) : Call<StoryResponse>
+
+    @Multipart
+    @POST("stories")
+    fun uploadImage(
+        @Part imageFile: MultipartBody.Part,
+        @Part("description") description: RequestBody,
+        @Part("lat") latitude: Double?,
+        @Part("lon") longitude: Double?,
+        @Header("Authorization") auth: String
+    ) : Call<BaseResponse>
 }
