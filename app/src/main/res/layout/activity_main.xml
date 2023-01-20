@@ -19,6 +19,22 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible"/>
 
+    <TextView
+        android:id="@+id/no_data_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_data_found"
+        android:elevation="10dp"
+        android:visibility="gone"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:fontFamily="@font/nexa_bold"
+        android:textColor="@color/blue_purple"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_story_list"
         android:layout_width="0dp"

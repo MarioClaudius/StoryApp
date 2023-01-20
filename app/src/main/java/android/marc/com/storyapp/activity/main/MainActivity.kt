@@ -84,6 +84,13 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.storyList.observe(this) { storyList ->
             setupRecyclerViewAdapter(storyList)
+            if (storyList.isEmpty()) {
+                binding.noDataTv.visibility = View.VISIBLE
+                binding.rvStoryList.visibility = View.GONE
+            } else {
+                binding.noDataTv.visibility = View.GONE
+                binding.rvStoryList.visibility = View.VISIBLE
+            }
         }
 
         mainViewModel.isLoading.observe(this) { isLoading ->
