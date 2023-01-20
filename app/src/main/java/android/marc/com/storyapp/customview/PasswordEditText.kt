@@ -12,8 +12,8 @@ import java.util.*
 class PasswordEditText: AppCompatEditText {
 
     private var timer: Timer? = null
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private var job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     constructor(context: Context) : super(context) {
         init()
@@ -44,9 +44,7 @@ class PasswordEditText: AppCompatEditText {
                         if (!text.isNullOrEmpty()) {
                             if (text.length < 8) {
                                 uiScope.launch {
-                                    withContext(Dispatchers.Main) {
-                                        setError(context.getString(R.string.invalid_password_error))
-                                    }
+                                    setError(context.getString(R.string.invalid_password_error))
                                 }
                             }
                         }

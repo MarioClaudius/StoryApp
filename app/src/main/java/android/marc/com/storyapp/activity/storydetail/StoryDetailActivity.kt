@@ -35,7 +35,7 @@ class StoryDetailActivity : AppCompatActivity() {
         binding = ActivityStoryDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        storyId = intent.getStringExtra(MainActivity.STORY_ID_KEY_EXTRA)!!
+        storyId = intent.getStringExtra(MainActivity.STORY_ID_KEY_EXTRA) ?: ""
 
         hideActionBar()
         getToken()
@@ -48,7 +48,9 @@ class StoryDetailActivity : AppCompatActivity() {
             ViewModelFactory(SessionPreference.getInstance(dataStore))
         )[StoryDetailViewModel::class.java]
 
-        storyDetailViewModel.getStoryDetail(storyId, auth)
+        if (storyId.isNotEmpty()) {
+            storyDetailViewModel.getStoryDetail(storyId, auth)
+        }
 
         storyDetailViewModel.storyDetail.observe(this) { storyDetail ->
             binding.apply {
@@ -73,7 +75,7 @@ class StoryDetailActivity : AppCompatActivity() {
     private fun getToken() {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
-        this.auth = "Bearer ${token}"
+        this.auth = "Bearer $token"
     }
 
     private fun hideActionBar() {

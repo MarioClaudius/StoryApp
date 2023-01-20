@@ -51,11 +51,6 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var auth: String
     private var uploadFile: File? = null
 
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
-
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
@@ -191,7 +186,7 @@ class AddStoryActivity : AppCompatActivity() {
     private fun getToken() {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
-        this.auth = "Bearer ${token}"
+        this.auth = "Bearer $token"
     }
 
     private fun getPhotoFromGallery() {
@@ -235,5 +230,10 @@ class AddStoryActivity : AppCompatActivity() {
 
     private fun allPermissionGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
     }
 }

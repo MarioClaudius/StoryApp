@@ -12,8 +12,8 @@ import java.util.*
 class EmailEditText: AppCompatEditText {
 
     private var timer: Timer? = null
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+    private var job = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
     constructor(context: Context) : super(context) {
         init()
@@ -32,9 +32,7 @@ class EmailEditText: AppCompatEditText {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (timer != null) {
-                    timer?.cancel()
-                }
+                timer?.cancel()
             }
 
             override fun afterTextChanged(text: Editable?) {
@@ -44,9 +42,7 @@ class EmailEditText: AppCompatEditText {
                         if (!text.isNullOrEmpty()) {
                             if (!isValidEmail(text.toString())) {
                                 uiScope.launch {
-                                    withContext(Dispatchers.Main) {
-                                        setError(context.getString(R.string.invalid_email_error))
-                                    }
+                                    setError(context.getString(R.string.invalid_email_error))
                                 }
                             }
                         }

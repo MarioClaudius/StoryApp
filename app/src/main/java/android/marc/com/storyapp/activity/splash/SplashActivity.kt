@@ -35,7 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler(Looper.myLooper()!!).postDelayed({
             setupViewModel()
-        }, 1500)
+        }, splashDuration)
 
     }
 
@@ -66,5 +66,9 @@ class SplashActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+    }
+
+    companion object {
+        const val splashDuration = 1500L
     }
 }

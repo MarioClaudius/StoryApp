@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
     private fun getToken() {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
-        this.auth = "Bearer ${token}"
+        this.auth = "Bearer $token"
     }
 
     private fun setupViewModel() {
@@ -127,12 +127,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        const val STORY_ID_KEY_EXTRA = "story_id_key_extra"
-    }
-
     override fun onResume() {
         super.onResume()
         mainViewModel.displayStoryList(null, null, null, auth)
+    }
+
+    companion object {
+        const val STORY_ID_KEY_EXTRA = "story_id_key_extra"
     }
 }
