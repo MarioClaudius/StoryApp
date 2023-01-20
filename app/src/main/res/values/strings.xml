@@ -11,4 +11,30 @@
     <string name="story_image">Story Image</string>
 
     <string name="story_creator">Created by %1$s</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="dont_have_an_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="invalid_email_error">Email address is invalid</string>
+    <string name="empty_email">Email is empty</string>
+    <string name="empty_password">Password is empty</string>
+    <string name="empty_name">Name is empty</string>
+    <string name="invalid_password_error">Password must not less than 8 characters</string>
+    <string name="success_dialog_title">Success!</string>
+    <string name="success_dialog_upload_message">Story uploaded successfully.</string>
+    <string name="success_dialog_login_message">Login success.</string>
+    <string name="success_dialog_register_message">You have successfully register your account.</string>
+    <string name="success_dialog_button">OK</string>
+    <string name="error_dialog_title">Error!</string>
+    <string name="error_dialog_login_message">Login failed. Please check your internet connection and make sure your email address &amp; password are correct.</string>
+    <string name="error_dialog_register_message">Register failed. Please check your internet connection and make sure your email address &amp; password are valid inputs.</string>
+    <string name="error_dialog_upload_message1">Upload story failed. Please choose the image first.</string>
+    <string name="error_dialog_upload_message2">Upload story failed. Please check your internet connection and make sure to filled the description.</string>
+    <string name="error_dialog_button">Try again</string>
+    <string name="intent_gallery_title">Choose a Picture</string>
+    <string name="permission_is_not_granted">Permission is not granted</string>
+    <string name="change_language">Change Language</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="description">Description</string>
+    <string name="upload">Upload</string>
 </resources>

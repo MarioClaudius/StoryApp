@@ -1,24 +1,39 @@
 package android.marc.com.storyapp.activity.register
 
+import android.content.Context
 import android.content.Intent
+import android.marc.com.storyapp.R
+import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.activity.login.LoginActivity
+import android.marc.com.storyapp.activity.main.MainActivity
 import android.marc.com.storyapp.api.ApiConfig
 import android.marc.com.storyapp.databinding.ActivityRegisterBinding
 import android.marc.com.storyapp.model.BaseResponse
+import android.marc.com.storyapp.model.SessionPreference
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
+
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class RegisterActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterBinding
+    private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +41,7 @@ class RegisterActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         hideActionBar()
+        setupViewModel()
         setupClickListener()
     }
 
@@ -36,35 +52,16 @@ class RegisterActivity : AppCompatActivity() {
             val password = binding.edRegisterPassword.text.toString()
             when {
                 name.isEmpty() -> {
-                    binding.edRegisterName.error = "Name is empty"
+                    binding.edRegisterName.error = getString(R.string.empty_name)
                 }
                 email.isEmpty() -> {
-                    binding.edRegisterEmail.error = "Email is empty"
+                    binding.edRegisterEmail.error = getString(R.string.empty_email)
                 }
                 password.isEmpty() -> {
-                    binding.edRegisterPassword.error = "Password is empty"
+                    binding.edRegisterPassword.error = getString(R.string.empty_password)
                 }
                 else -> {
-                    val registerService = ApiConfig().getApiService().register(name, email, password)
-                    registerService.enqueue(object: Callback<BaseResponse>{
-                        override fun onResponse(
-                            call: Call<BaseResponse>,
-                            response: Response<BaseResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                val body = response.body()
-                                Log.d("BTN REGISTER", "Name: $name, Email: $email, Password: $password")
-                                Toast.makeText(this@RegisterActivity, body?.message, Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(this@RegisterActivity, "Register failed", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-
-                        override fun onFailure(call: Call<BaseResponse>, t: Throwable) {
-                            t.printStackTrace()
-                        }
-
-                    })
+                    registerViewModel.register(name, email, password)
                 }
             }
         }
@@ -72,6 +69,57 @@ class RegisterActivity : AppCompatActivity() {
         binding.tvLogin.setOnClickListener {
             val loginIntent = Intent(this@RegisterActivity, LoginActivity::class.java)
             startActivity(loginIntent)
+            finish()
+        }
+    }
+
+    private fun setupViewModel() {
+        registerViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(SessionPreference.getInstance(dataStore))
+        )[RegisterViewModel::class.java]
+
+        registerViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+
+        registerViewModel.isError.observe(this) { isError ->
+            if (isError) {
+                registerViewModel.doneDialogIsError()
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.error_dialog_title))
+                    setMessage(getString(R.string.error_dialog_register_message))
+                    setPositiveButton(getString(R.string.error_dialog_button)){ _,_ -> }
+                    create()
+                    show()
+                }
+            }
+        }
+
+        registerViewModel.isSuccess.observe(this) { isSuccess ->
+            if (isSuccess) {
+                registerViewModel.doneDialogIsSuccess()
+                val builder = AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.success_dialog_title))
+                    setMessage(getString(R.string.success_dialog_register_message))
+                }
+                val dialog = builder.create()
+                dialog.show()
+                val timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        dialog.dismiss()
+                        timer.cancel()
+                        val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }, 1000)
+            }
         }
     }
 

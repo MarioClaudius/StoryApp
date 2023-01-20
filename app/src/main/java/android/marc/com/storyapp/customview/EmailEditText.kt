@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import kotlinx.coroutines.*
 import java.util.*
 
-class PasswordEditText: AppCompatEditText {
+class EmailEditText: AppCompatEditText {
 
     private var timer: Timer? = null
     private var viewModelJob = Job()
@@ -26,7 +26,7 @@ class PasswordEditText: AppCompatEditText {
     }
 
     private fun init() {
-        this.addTextChangedListener(object : TextWatcher{
+        this.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -42,10 +42,10 @@ class PasswordEditText: AppCompatEditText {
                 timer?.schedule(object : TimerTask() {
                     override fun run() {
                         if (!text.isNullOrEmpty()) {
-                            if (text.length < 8) {
+                            if (!isValidEmail(text.toString())) {
                                 uiScope.launch {
                                     withContext(Dispatchers.Main) {
-                                        setError(context.getString(R.string.invalid_password_error))
+                                        setError(context.getString(R.string.invalid_email_error))
                                     }
                                 }
                             }
@@ -56,4 +56,9 @@ class PasswordEditText: AppCompatEditText {
             }
         })
     }
+
+    private fun isValidEmail(email: String) : Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
 }

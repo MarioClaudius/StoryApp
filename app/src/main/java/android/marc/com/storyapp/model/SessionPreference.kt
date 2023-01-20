@@ -22,7 +22,7 @@ class SessionPreference private constructor(private val dataStore: DataStore<Pre
         }
     }
 
-    suspend fun login(session: LoginSession) {
+    suspend fun saveSession(session: LoginSession) {
         dataStore.edit { preferences ->
             preferences[USER_ID_KEY] = session.userId
             preferences[NAME_KEY] = session.name

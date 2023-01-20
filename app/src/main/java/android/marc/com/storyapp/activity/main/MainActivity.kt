@@ -15,6 +15,7 @@ import android.marc.com.storyapp.model.Story
 import android.marc.com.storyapp.model.StoryListResponse
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -110,6 +111,10 @@ class MainActivity : AppCompatActivity() {
         return when(item.itemId) {
             R.id.add_story -> {
                 startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
+                true
+            }
+            R.id.change_language -> {
+                startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
             }
             R.id.logout -> {

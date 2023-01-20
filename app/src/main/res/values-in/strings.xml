@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StoryApp</string>
+    <string name="storyapp_logo">Logo StoryApp</string>
+    <string name="name_hint">Nama</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Kata Sandi</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+    <string name="add_story">Tambah Story</string>
+    <string name="log_out">Keluar</string>
+    <string name="story_image">Gambar Story</string>
+
+    <string name="story_creator">Dibuat oleh %1$s</string>
+    <string name="welcome_back">Selamat datang kembali!</string>
+    <string name="dont_have_an_account">Belum punya akun?</string>
+    <string name="sign_up">Daftar</string>
+    <string name="invalid_email_error">Alamat email tidak valid</string>
+    <string name="empty_email">Alamat email belum terisi</string>
+    <string name="empty_password">Kata sandi belum terisi</string>
+    <string name="empty_name">Nama belum terisi</string>
+    <string name="invalid_password_error">Kata sandi harus terdiri dari minimal 8 karakter</string>
+    <string name="success_dialog_title">Berhasil!</string>
+    <string name="success_dialog_upload_message">Story berhasil diunggah.</string>
+    <string name="success_dialog_login_message">Berhasil masuk.</string>
+    <string name="success_dialog_register_message">Anda telah berhasil mendaftarkan akun anda.</string>
+    <string name="success_dialog_button">OK</string>
+    <string name="error_dialog_title">Gagal!</string>
+    <string name="error_dialog_login_message">Gagal masuk. Mohon cek koneksi internet dan pastikan alamat email &amp; password sudah benar.</string>
+    <string name="error_dialog_register_message">Gagal daftar. Mohon cek koneksi internet dan pastikan alamat email &amp; password merupakan input yang valid.</string>
+    <string name="error_dialog_upload_message1">Gagal mengunggah story. Mohon pilih gambar terlebih dahulu.</string>
+    <string name="error_dialog_upload_message2">Gagal mengunggah story. Mohon cek koneksi internet dan pastikan deskripsi sudah diisi.</string>
+    <string name="error_dialog_button">Coba lagi</string>
+    <string name="intent_gallery_title">Pilih gambar</string>
+    <string name="permission_is_not_granted">Izin tidak diberikan</string>
+    <string name="change_language">Ganti bahasa</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="description">Deskripsi</string>
+    <string name="upload">Unggah</string>
+</resources>

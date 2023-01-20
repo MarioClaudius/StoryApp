@@ -8,6 +8,12 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/change_language"
+        android:title="@string/change_language"
+        android:icon="@drawable/ic_setting"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/logout"
         android:title="@string/log_out"
         android:icon="@drawable/ic_logout"

@@ -1,7 +1,10 @@
 package android.marc.com.storyapp.activity.login
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.main.MainActivity
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.databinding.ActivityLoginBinding
@@ -10,10 +13,14 @@ import android.marc.com.storyapp.api.ApiConfig
 import android.marc.com.storyapp.model.*
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -22,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -36,6 +44,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        playAnimation()
         setupViewModel()
         hideActionBar()
         setupClickListener()
@@ -47,38 +56,13 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.edLoginPassword.text.toString()
             when {
                 email.isEmpty() -> {
-                    binding.edLoginEmail.error = "Email is empty"
+                    binding.edLoginEmail.error = getString(R.string.empty_email)
                 }
                 password.isEmpty() -> {
-                    binding.edLoginPassword.error = "Password is empty"
+                    binding.edLoginPassword.error = getString(R.string.empty_password)
                 }
                 else -> {
-                    val loginService = ApiConfig().getApiService().login(email, password)
-                    loginService.enqueue(object: Callback<LoginResponse>{
-                        override fun onResponse(
-                            call: Call<LoginResponse>,
-                            response: Response<LoginResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                val isError = response.body()?.error
-                                val session = response.body()?.loginSession
-                                if (session != null && !isError!!) {
-                                    loginViewModel.login(LoginSession(session.userId, session.name, session.token))
-                                    Log.d("BTN LOGIN", "Email: $email, Password: $password")
-                                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    Toast.makeText(this@LoginActivity, "Session failed to be saved", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-
-                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                            t.printStackTrace()
-                        }
-
-                    })
+                    loginViewModel.login(email, password)
                 }
             }
         }
@@ -86,6 +70,25 @@ class LoginActivity : AppCompatActivity() {
         binding.tvSignUp.setOnClickListener {
             val registerIntent = Intent(this@LoginActivity, RegisterActivity::class.java)
             startActivity(registerIntent)
+            finish()
+        }
+    }
+
+    private fun playAnimation() {
+        val welcomeBackAnimation = ObjectAnimator.ofFloat(binding.tvWelcomeBack, View.ALPHA, 1f).setDuration(500)
+        val emailEdtAnimation = ObjectAnimator.ofFloat(binding.edLoginEmail, View.ALPHA, 1f).setDuration(500)
+        val passwordEdtAnimation = ObjectAnimator.ofFloat(binding.edLoginPassword, View.ALPHA, 1f).setDuration(500)
+        val loginBtnAnimation = ObjectAnimator.ofFloat(binding.btnLogin, View.ALPHA, 1f).setDuration(500)
+        val dontHaveAccountTvAnimation = ObjectAnimator.ofFloat(binding.tvDontHaveAccount, View.ALPHA, 1f).setDuration(500)
+        val signUpTvAnimation = ObjectAnimator.ofFloat(binding.tvSignUp, View.ALPHA, 1f).setDuration(500)
+
+        val together = AnimatorSet().apply {
+            playTogether(dontHaveAccountTvAnimation, signUpTvAnimation)
+        }
+
+        AnimatorSet().apply {
+            playSequentially(welcomeBackAnimation, emailEdtAnimation, passwordEdtAnimation, loginBtnAnimation, together)
+            start()
         }
     }
 
@@ -97,6 +100,49 @@ class LoginActivity : AppCompatActivity() {
 
         loginViewModel.getSession().observe(this) { session ->
             this.session = session
+        }
+
+        loginViewModel.isLoading.observe(this) { isLoading ->
+            if (isLoading) {
+                binding.progressBar.visibility = View.VISIBLE
+            } else {
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+
+        loginViewModel.isError.observe(this) { isError ->
+            if (isError) {
+                loginViewModel.doneDialogIsError()
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.error_dialog_title))
+                    setMessage(getString(R.string.error_dialog_login_message))
+                    setPositiveButton(getString(R.string.error_dialog_button)){ _,_ -> }
+                    create()
+                    show()
+                }
+            }
+        }
+
+        loginViewModel.isSuccess.observe(this) { isSuccess ->
+            if (isSuccess) {
+                loginViewModel.doneDialogIsSuccess()
+                val builder = AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.success_dialog_title))
+                    setMessage(getString(R.string.success_dialog_login_message))
+                }
+                val dialog = builder.create()
+                dialog.show()
+                val timer = Timer()
+                timer.schedule(object : TimerTask() {
+                    override fun run() {
+                        dialog.dismiss()
+                        timer.cancel()
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                }, 1000)
+            }
         }
     }
 

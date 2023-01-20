@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.databinding.ActivityAddStoryBinding
 import android.marc.com.storyapp.helper.createCustomTempFile
@@ -23,6 +24,7 @@ import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -104,6 +106,7 @@ class AddStoryActivity : AppCompatActivity() {
         }
         binding.btnUpload.setOnClickListener {
             if (uploadFile != null) {
+                addStoryViewModel.startLoading()
                 val file = reduceFileImage(uploadFile as File)
 
                 val description = binding.edtDescriptionBox.text.toString().toRequestBody("text/plain".toMediaType())
@@ -114,6 +117,14 @@ class AddStoryActivity : AppCompatActivity() {
                     requestImageFile
                 )
                 addStoryViewModel.uploadImage(imageMultipart, description, null, null, auth)
+            } else {
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.error_dialog_title))
+                    setMessage(getString(R.string.error_dialog_upload_message1))
+                    setPositiveButton(getString(R.string.error_dialog_button)) { _,_ -> }
+                    create()
+                    show()
+                }
             }
         }
     }
@@ -134,17 +145,29 @@ class AddStoryActivity : AppCompatActivity() {
 
         addStoryViewModel.isSuccess.observe(this) { isSuccess ->
             if (isSuccess) {
-                Toast.makeText(this@AddStoryActivity, "Story added successfully", Toast.LENGTH_SHORT).show()
                 addStoryViewModel.doneDialogIsSuccess()
-                // Dialog success
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.success_dialog_title))
+                    setMessage(getString(R.string.success_dialog_upload_message))
+                    setPositiveButton(getString(R.string.success_dialog_button)) { _,_ ->
+                        finish()
+                    }
+                    create()
+                    show()
+                }
             }
         }
 
         addStoryViewModel.isError.observe(this) { isError ->
             if (isError) {
-                Toast.makeText(this@AddStoryActivity, "Add story failed", Toast.LENGTH_SHORT).show()
                 addStoryViewModel.doneDialogIsError()
-                // Dialog error
+                AlertDialog.Builder(this).apply {
+                    setTitle(getString(R.string.error_dialog_title))
+                    setMessage(getString(R.string.error_dialog_upload_message2))
+                    setPositiveButton(getString(R.string.error_dialog_button)) {_,_ -> }
+                    create()
+                    show()
+                }
             }
         }
     }
@@ -175,7 +198,7 @@ class AddStoryActivity : AppCompatActivity() {
         val intent = Intent()
         intent.action = ACTION_GET_CONTENT
         intent.type = "image/*"
-        val chooser = Intent.createChooser(intent, "Choose a Picture")
+        val chooser = Intent.createChooser(intent, getString(R.string.intent_gallery_title))
         launcherIntentGallery.launch(chooser)
     }
 
@@ -202,7 +225,7 @@ class AddStoryActivity : AppCompatActivity() {
             if (!allPermissionGranted()) {
                 Toast.makeText(
                     this,
-                    "Tidak mendapatkan permission.",
+                    getString(R.string.permission_is_not_granted),
                     Toast.LENGTH_SHORT
                 ).show()
                 finish()
