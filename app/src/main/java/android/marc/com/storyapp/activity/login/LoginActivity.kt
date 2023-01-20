@@ -5,30 +5,23 @@ import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
 import android.marc.com.storyapp.R
-import android.marc.com.storyapp.activity.main.MainActivity
 import android.marc.com.storyapp.activity.ViewModelFactory
-import android.marc.com.storyapp.databinding.ActivityLoginBinding
+import android.marc.com.storyapp.activity.main.MainActivity
 import android.marc.com.storyapp.activity.register.RegisterActivity
-import android.marc.com.storyapp.api.ApiConfig
-import android.marc.com.storyapp.model.*
+import android.marc.com.storyapp.databinding.ActivityLoginBinding
+import android.marc.com.storyapp.model.LoginSession
+import android.marc.com.storyapp.model.SessionPreference
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")

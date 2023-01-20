@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -47,9 +46,6 @@ class SplashActivity : AppCompatActivity() {
         )[SplashViewModel::class.java]
 
         splashViewModel.getSession().observe(this) { session ->
-            Log.d("userId", session.userId)
-            Log.d("name", session.name)
-            Log.d("token", session.token)
             if (session.userId.isEmpty() && session.name.isEmpty() && session.token.isEmpty()) {
                 startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             } else {

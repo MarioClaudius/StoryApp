@@ -8,19 +8,15 @@ import android.marc.com.storyapp.activity.addstory.AddStoryActivity
 import android.marc.com.storyapp.activity.login.LoginActivity
 import android.marc.com.storyapp.activity.storydetail.StoryDetailActivity
 import android.marc.com.storyapp.adapter.StoryListAdapter
-import android.marc.com.storyapp.api.ApiConfig
 import android.marc.com.storyapp.databinding.ActivityMainBinding
 import android.marc.com.storyapp.model.SessionPreference
 import android.marc.com.storyapp.model.Story
-import android.marc.com.storyapp.model.StoryListResponse
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -29,9 +25,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
