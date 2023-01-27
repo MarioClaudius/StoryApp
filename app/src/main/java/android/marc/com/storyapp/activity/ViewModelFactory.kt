@@ -3,6 +3,7 @@ package android.marc.com.storyapp.activity
 import android.marc.com.storyapp.activity.addstory.AddStoryViewModel
 import android.marc.com.storyapp.activity.login.LoginViewModel
 import android.marc.com.storyapp.activity.main.MainViewModel
+import android.marc.com.storyapp.activity.maps.MapsViewModel
 import android.marc.com.storyapp.activity.register.RegisterViewModel
 import android.marc.com.storyapp.activity.splash.SplashViewModel
 import android.marc.com.storyapp.activity.storydetail.StoryDetailViewModel
@@ -32,6 +33,9 @@ class ViewModelFactory(private val pref: SessionPreference) : ViewModelProvider.
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel() as T
+            }
+            modelClass.isAssignableFrom(MapsViewModel::class.java) -> {
+                MapsViewModel() as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

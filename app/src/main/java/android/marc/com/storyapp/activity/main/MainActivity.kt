@@ -6,6 +6,7 @@ import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.activity.addstory.AddStoryActivity
 import android.marc.com.storyapp.activity.login.LoginActivity
+import android.marc.com.storyapp.activity.maps.MapsActivity
 import android.marc.com.storyapp.activity.storydetail.StoryDetailActivity
 import android.marc.com.storyapp.adapter.StoryListAdapter
 import android.marc.com.storyapp.databinding.ActivityMainBinding
@@ -13,6 +14,7 @@ import android.marc.com.storyapp.model.SessionPreference
 import android.marc.com.storyapp.model.Story
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -64,6 +66,7 @@ class MainActivity : AppCompatActivity() {
     private fun getToken() {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
+        Log.d("TEST", token!!)
         this.auth = "Bearer $token"
     }
 
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory(SessionPreference.getInstance(dataStore))
         )[MainViewModel::class.java]
 
-        mainViewModel.displayStoryList(null, null, null, auth)
+        mainViewModel.getStoryList(null, null, null, auth)
 
         mainViewModel.storyList.observe(this) { storyList ->
             setupRecyclerViewAdapter(storyList)
@@ -113,6 +116,10 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, AddStoryActivity::class.java))
                 true
             }
+            R.id.story_maps -> {
+                startActivity(Intent(this@MainActivity, MapsActivity::class.java))
+                true
+            }
             R.id.change_language -> {
                 startActivity(Intent(Settings.ACTION_LOCALE_SETTINGS))
                 true
@@ -129,7 +136,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        mainViewModel.displayStoryList(null, null, null, auth)
+        mainViewModel.getStoryList(null, null, null, auth)
     }
 
     companion object {

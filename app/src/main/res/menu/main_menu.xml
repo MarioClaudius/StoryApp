@@ -5,13 +5,19 @@
         android:id="@+id/add_story"
         android:title="@string/add_story"
         android:icon="@drawable/ic_add_box"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/story_maps"
+        android:title="@string/story_maps"
+        android:icon="@drawable/ic_map"
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/change_language"
         android:title="@string/change_language"
         android:icon="@drawable/ic_setting"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/logout"
