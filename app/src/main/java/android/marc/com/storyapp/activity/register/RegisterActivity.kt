@@ -68,7 +68,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupViewModel() {
         registerViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(SessionPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore), this, "")
         )[RegisterViewModel::class.java]
 
         registerViewModel.isLoading.observe(this) { isLoading ->

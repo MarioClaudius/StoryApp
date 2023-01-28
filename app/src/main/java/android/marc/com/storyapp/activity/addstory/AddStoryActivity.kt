@@ -127,7 +127,7 @@ class AddStoryActivity : AppCompatActivity() {
     private fun setupViewModel() {
         addStoryViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(SessionPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore), this, auth)
         )[AddStoryViewModel::class.java]
 
         addStoryViewModel.isLoading.observe(this) { isLoading ->

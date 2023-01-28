@@ -42,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
     private fun setupViewModel() {
         splashViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(SessionPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore), this, "")
         )[SplashViewModel::class.java]
 
         splashViewModel.getSession().observe(this) { session ->

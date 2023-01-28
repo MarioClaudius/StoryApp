@@ -19,8 +19,11 @@ interface ApiService {
     @POST("login")
     fun login(@Field("email") email: String, @Field("password") password: String) : Call<LoginResponse>
 
+//    @GET("stories")
+//    fun getAllStories(@Query("page") page: Int?, @Query("size") size: Int?, @Query("location") location: Int? = 0, @Header("Authorization") auth: String) : Call<StoryListResponse>
+
     @GET("stories")
-    fun getAllStories(@Query("page") page: Int?, @Query("size") size: Int?, @Query("location") location: Int? = 0, @Header("Authorization") auth: String) : Call<StoryListResponse>
+    suspend fun getAllStories(@Query("page") page: Int?, @Query("size") size: Int?, @Query("location") location: Int? = 0, @Header("Authorization") auth: String) : StoryListResponse
 
     @GET("stories/{id}")
     fun getStoryDetail(@Path("id") id: String, @Header("Authorization") auth: String) : Call<StoryResponse>

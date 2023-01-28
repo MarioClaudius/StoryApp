@@ -45,7 +45,7 @@ class StoryDetailActivity : AppCompatActivity() {
     private fun setupViewModel(){
         storyDetailViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(SessionPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore), this, auth)
         )[StoryDetailViewModel::class.java]
 
         if (storyId.isNotEmpty()) {

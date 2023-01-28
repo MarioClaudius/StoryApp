@@ -96,12 +96,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupViewModel() {
         mapsViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(SessionPreference.getInstance(dataStore))
+            ViewModelFactory(SessionPreference.getInstance(dataStore), this, auth)
         )[MapsViewModel::class.java]
 
         mapsViewModel.storyList.observe(this) { storyList ->
             if (storyList.isNotEmpty()) {
-                Log.d(TAG, storyList.toString())
                 addStoryMarker(storyList)
                 setCameraFocusOnMarker()
             }
@@ -118,4 +117,3 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         const val TAG = "MapsActivity"
     }
 }
-// https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=55:83:3B:78:40:9E:E7:03:6B:54:C7:6F:A4:82:D4:16:0F:00:54:11%3Bandroid.marc.com.storyapp
