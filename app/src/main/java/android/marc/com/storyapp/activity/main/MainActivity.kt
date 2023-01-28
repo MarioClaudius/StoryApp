@@ -23,10 +23,12 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -37,6 +39,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainViewModel: MainViewModel
     private lateinit var rvStory: RecyclerView
     private lateinit var auth: String
+    private lateinit var storyListAdapter: StoryListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +51,13 @@ class MainActivity : AppCompatActivity() {
 
         getToken()
         setupViewModel()
+        setupRecyclerViewAdapter()
     }
 
-    private fun setupRecyclerViewAdapter(storyList: PagingData<Story>) {
+    private fun setupRecyclerViewAdapter() {
         rvStory.layoutManager = GridLayoutManager(this, 2)
-        val storyListAdapter = StoryListAdapter()
+        storyListAdapter = StoryListAdapter()
         rvStory.adapter = storyListAdapter
-        storyListAdapter.submitData(lifecycle, storyList)
 
         storyListAdapter.setOnItemClickCallback(object : StoryListAdapter.OnItemClickCallback{
             override fun onItemClicked(storyId: String) {
@@ -78,21 +81,8 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory(SessionPreference.getInstance(dataStore), this, auth)
         )[MainViewModel::class.java]
 
-//        mainViewModel.getStoryList(null, null, null, auth)
-
-//        mainViewModel.storyList.observe(this) { storyList ->
-//            setupRecyclerViewAdapter(storyList)
-//            if (storyList.isEmpty()) {
-//                binding.noDataTv.visibility = View.VISIBLE
-//                binding.rvStoryList.visibility = View.GONE
-//            } else {
-//                binding.noDataTv.visibility = View.GONE
-//                binding.rvStoryList.visibility = View.VISIBLE
-//            }
-//        }
-
         mainViewModel.story.observe(this) {
-            setupRecyclerViewAdapter(it)
+            storyListAdapter.submitData(lifecycle, it)
         }
 
         mainViewModel.isLoading.observe(this) { isLoading ->
@@ -140,10 +130,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//        mainViewModel.getStoryList(null, null, null, auth)
-//    }
+    override fun onResume() {
+        super.onResume()
+        storyListAdapter.refresh()
+    }
 
     companion object {
         const val STORY_ID_KEY_EXTRA = "story_id_key_extra"

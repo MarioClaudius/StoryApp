@@ -22,6 +22,7 @@ class MainViewModel(private val pref: SessionPreference, storyRepository: StoryR
     private val _storyList = MutableLiveData<List<Story>>()
     val storyList: LiveData<List<Story>> = _storyList
 
+    private val _story = MutableLiveData<PagingData<Story>>()
     val story: LiveData<PagingData<Story>> = storyRepository.getAllStories().cachedIn(viewModelScope)
 
 //    fun getStoryList(page: Int?, size: Int?, location: Int?, auth: String) {
@@ -44,6 +45,10 @@ class MainViewModel(private val pref: SessionPreference, storyRepository: StoryR
 //
 //        })
 //    }
+
+    fun changeStoryList() {
+        _story.value = PagingData.empty()
+    }
 
     fun getSession(): LiveData<LoginSession> {
         return pref.getSession().asLiveData()
