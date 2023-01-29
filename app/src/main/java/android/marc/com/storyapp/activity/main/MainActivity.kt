@@ -71,7 +71,6 @@ class MainActivity : AppCompatActivity() {
     private fun getToken() {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
-        Log.d("TEST", token!!)
         this.auth = "Bearer $token"
     }
 
