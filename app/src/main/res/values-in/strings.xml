@@ -29,7 +29,7 @@
     <string name="error_dialog_login_message">Gagal masuk. Mohon cek koneksi internet dan pastikan alamat email &amp; password sudah benar.</string>
     <string name="error_dialog_register_message">Gagal daftar. Mohon cek koneksi internet dan pastikan alamat email &amp; password merupakan input yang valid.</string>
     <string name="error_dialog_upload_message1">Gagal mengunggah story. Mohon pilih gambar terlebih dahulu.</string>
-    <string name="error_dialog_upload_message2">Gagal mengunggah story. Mohon cek koneksi internet dan pastikan deskripsi sudah diisi.</string>
+    <string name="error_dialog_upload_message2">Gagal mengunggah story. Mohon cek koneksi internet dan pastikan deskripsi sudah diisi &amp; GPS sudah dinyalakan jika ingin menambahkan lokasi.</string>
     <string name="error_dialog_button">Coba lagi</string>
     <string name="intent_gallery_title">Pilih gambar</string>
     <string name="permission_is_not_granted">Izin tidak diberikan</string>
@@ -39,4 +39,7 @@
     <string name="description">Deskripsi</string>
     <string name="upload">Unggah</string>
     <string name="no_data_found">Tidak ada data yang ditemukan</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="story_maps">Story Maps</string>
+    <string name="add_current_location">Tambahkan Lokasi Sekarang</string>
 </resources>

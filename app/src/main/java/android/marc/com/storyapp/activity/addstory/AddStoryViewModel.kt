@@ -50,6 +50,13 @@ class AddStoryViewModel : ViewModel(){
     fun startLoading() {
         _isLoading.value = true
     }
+    fun endLoading() {
+        _isLoading.value = false
+    }
+
+    fun showDialogIsError() {
+        _isError.value = true
+    }
 
     fun doneDialogIsSuccess() {
         _isSuccess.value = false

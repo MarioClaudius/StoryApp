@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
 import android.marc.com.storyapp.databinding.ActivityAddStoryBinding
@@ -19,6 +20,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -32,6 +34,8 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaType
@@ -49,7 +53,10 @@ class AddStoryActivity : AppCompatActivity() {
     private lateinit var addStoryViewModel: AddStoryViewModel
     private lateinit var currentPhotoPath: String
     private lateinit var auth: String
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var uploadFile: File? = null
+    private var currentLocationLatitude: Double? = null
+    private var currentLocationLongitude: Double? = null
 
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -73,10 +80,30 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    private val requestGetLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                // Precise location access granted.
+                uploadStoryWithLocation()
+            }
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                // Only approximate location access granted.
+                uploadStoryWithLocation()
+            }
+            else -> {
+                // No location access granted.
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (!allPermissionGranted()) {
             ActivityCompat.requestPermissions(
@@ -102,16 +129,20 @@ class AddStoryActivity : AppCompatActivity() {
         binding.btnUpload.setOnClickListener {
             if (uploadFile != null) {
                 addStoryViewModel.startLoading()
-                val file = reduceFileImage(uploadFile as File)
+                if (binding.checkboxCurrentLocation.isChecked) {
+                    uploadStoryWithLocation()
+                } else {
+                    val file = reduceFileImage(uploadFile as File)
 
-                val description = binding.edtDescriptionBox.text.toString().toRequestBody("text/plain".toMediaType())
-                val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                    "photo",
-                    file.name,
-                    requestImageFile
-                )
-                addStoryViewModel.uploadImage(imageMultipart, description, null, null, auth)
+                    val description = binding.edtDescriptionBox.text.toString().toRequestBody("text/plain".toMediaType())
+                    val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                        "photo",
+                        file.name,
+                        requestImageFile
+                    )
+                    addStoryViewModel.uploadImage(imageMultipart, description, null, null, auth)
+                }
             } else {
                 AlertDialog.Builder(this).apply {
                     setTitle(getString(R.string.error_dialog_title))
@@ -208,6 +239,43 @@ class AddStoryActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+    }
+
+    private fun uploadStoryWithLocation() {
+        if (checkGetLocationPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkGetLocationPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val file = reduceFileImage(uploadFile as File)
+
+                    val description = binding.edtDescriptionBox.text.toString().toRequestBody("text/plain".toMediaType())
+                    val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    val imageMultipart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                        "photo",
+                        file.name,
+                        requestImageFile
+                    )
+                    addStoryViewModel.uploadImage(imageMultipart, description, location.latitude, location.longitude, auth)
+                    addStoryViewModel.endLoading()
+                } else {
+                    addStoryViewModel.endLoading()
+                    addStoryViewModel.showDialogIsError()
+                }
+            }
+        } else {
+            requestGetLocationPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
+    private fun checkGetLocationPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     override fun onRequestPermissionsResult(

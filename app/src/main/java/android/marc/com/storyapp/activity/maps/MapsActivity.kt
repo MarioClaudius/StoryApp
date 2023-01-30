@@ -16,7 +16,10 @@ import com.google.android.gms.maps.model.MarkerOptions
 import android.marc.com.storyapp.databinding.ActivityMapsBinding
 import android.marc.com.storyapp.model.SessionPreference
 import android.marc.com.storyapp.model.Story
+import android.os.Build
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -42,6 +45,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        hideActionBar()
         getToken()
         setupViewModel()
 
@@ -111,6 +115,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         var token: String?
         runBlocking { token = SessionPreference.getInstance(dataStore).getSessionToken().first() }
         this.auth = "Bearer $token"
+    }
+
+    private fun hideActionBar() {
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        } else {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+        supportActionBar?.hide()
     }
 
     companion object {

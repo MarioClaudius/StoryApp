@@ -31,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var session: LoginSession
+    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,13 +107,15 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel.isError.observe(this) { isError ->
             if (isError) {
                 loginViewModel.doneDialogIsError()
-                AlertDialog.Builder(this).apply {
+                val builder = AlertDialog.Builder(this).apply {
                     setTitle(getString(R.string.error_dialog_title))
                     setMessage(getString(R.string.error_dialog_login_message))
                     setPositiveButton(getString(R.string.error_dialog_button)){ _,_ -> }
-                    create()
-                    show()
+//                    create()
+//                    show()
                 }
+                dialog = builder.create()
+                dialog.show()
             }
         }
 
@@ -123,7 +126,7 @@ class LoginActivity : AppCompatActivity() {
                     setTitle(getString(R.string.success_dialog_title))
                     setMessage(getString(R.string.success_dialog_login_message))
                 }
-                val dialog = builder.create()
+                dialog = builder.create()
                 dialog.show()
                 val timer = Timer()
                 timer.schedule(object : TimerTask() {
@@ -150,5 +153,9 @@ class LoginActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
+    }
+
+    fun getDialog(): AlertDialog {
+        return dialog
     }
 }

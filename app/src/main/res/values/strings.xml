@@ -28,7 +28,7 @@
     <string name="error_dialog_login_message">Login failed. Please check your internet connection and make sure your email address &amp; password are correct.</string>
     <string name="error_dialog_register_message">Register failed. Please check your internet connection and make sure your email address &amp; password are valid inputs.</string>
     <string name="error_dialog_upload_message1">Upload story failed. Please choose the image first.</string>
-    <string name="error_dialog_upload_message2">Upload story failed. Please check your internet connection and make sure to filled the description.</string>
+    <string name="error_dialog_upload_message2">Upload story failed. Please check your internet connection and make sure to filled the description &amp; turn on the GPS if you want to add your location.</string>
     <string name="error_dialog_button">Try again</string>
     <string name="intent_gallery_title">Choose a Picture</string>
     <string name="permission_is_not_granted">Permission is not granted</string>
@@ -40,4 +40,5 @@
     <string name="no_data_found">No data found</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="story_maps">Story Maps</string>
+    <string name="add_current_location">Add Current Location</string>
 </resources>

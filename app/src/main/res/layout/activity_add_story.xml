@@ -36,6 +36,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/camera"
+        android:fontFamily="@font/nexa_bold"
         android:background="@drawable/rounded_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/preview_image"
@@ -47,6 +48,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:text="@string/gallery"
+        android:fontFamily="@font/nexa_bold"
         android:background="@drawable/rounded_button"
         app:layout_constraintStart_toEndOf="@id/btn_camera"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,6 +73,19 @@
         app:layout_constraintTop_toBottomOf="@id/btn_camera"
         app:layout_constraintBottom_toTopOf="@id/btn_upload"/>
 
+    <CheckBox
+        android:id="@+id/checkbox_current_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/edt_description_box"
+        app:layout_constraintTop_toBottomOf="@id/edt_description_box"
+        app:layout_constraintBottom_toTopOf="@id/btn_upload"
+        android:buttonTint="@color/blue_purple"
+        android:text="@string/add_current_location"
+        android:layout_marginVertical="10dp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nexa_bold"/>
+
     <Button
         android:id="@+id/btn_upload"
         android:layout_width="0dp"
@@ -79,9 +94,10 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="20dp"
         android:background="@drawable/rounded_button"
+        android:fontFamily="@font/nexa_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edt_description_box"
+        app:layout_constraintTop_toBottomOf="@id/checkbox_current_location"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

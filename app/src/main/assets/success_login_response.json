@@ -1,0 +1,9 @@
+{
+  "error": false,
+  "message": "success",
+  "loginResult": {
+    "userId": "user-qEVtEZoix2kDjn6w",
+    "name": "iajasisosk",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLXFFVnRFWm9peDJrRGpuNnciLCJpYXQiOjE2NzUwNTU3OTl9.fr-7TsW1QgQtIqzu2c1ZLS2QVEnFRT1ciq_8qo-OqoQ"
+  }
+}
