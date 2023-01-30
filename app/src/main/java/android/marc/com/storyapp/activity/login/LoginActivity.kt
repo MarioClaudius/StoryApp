@@ -3,6 +3,7 @@ package android.marc.com.storyapp.activity.login
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.marc.com.storyapp.R
 import android.marc.com.storyapp.activity.ViewModelFactory
@@ -22,7 +23,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import java.util.*
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var session: LoginSession
-    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,10 +110,8 @@ class LoginActivity : AppCompatActivity() {
                     setTitle(getString(R.string.error_dialog_title))
                     setMessage(getString(R.string.error_dialog_login_message))
                     setPositiveButton(getString(R.string.error_dialog_button)){ _,_ -> }
-//                    create()
-//                    show()
                 }
-                dialog = builder.create()
+                val dialog = builder.create()
                 dialog.show()
             }
         }
@@ -125,19 +122,18 @@ class LoginActivity : AppCompatActivity() {
                 val builder = AlertDialog.Builder(this).apply {
                     setTitle(getString(R.string.success_dialog_title))
                     setMessage(getString(R.string.success_dialog_login_message))
+                    setCancelable(false)
                 }
-                dialog = builder.create()
-                dialog.show()
-                val timer = Timer()
-                timer.schedule(object : TimerTask() {
-                    override fun run() {
+                val dialog = builder.create()
+                dialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.success_dialog_button), object : DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
                         dialog.dismiss()
-                        timer.cancel()
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
-                }, 1000)
+                })
+                dialog.show()
             }
         }
     }
@@ -153,9 +149,5 @@ class LoginActivity : AppCompatActivity() {
             )
         }
         supportActionBar?.hide()
-    }
-
-    fun getDialog(): AlertDialog {
-        return dialog
     }
 }

@@ -1,6 +1,5 @@
 package android.marc.com.storyapp.activity.main
 
-import android.content.Context
 import android.marc.com.storyapp.DataDummy
 import android.marc.com.storyapp.MainDispatcherRule
 import android.marc.com.storyapp.adapter.StoryListAdapter
@@ -19,7 +18,8 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

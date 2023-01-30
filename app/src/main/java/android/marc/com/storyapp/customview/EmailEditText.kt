@@ -48,7 +48,7 @@ class EmailEditText: AppCompatEditText {
                         }
                     }
 
-                }, 1000)
+                }, waitToCheckDuration)
             }
         })
     }
@@ -57,4 +57,7 @@ class EmailEditText: AppCompatEditText {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
+    companion object {
+        const val waitToCheckDuration = 1000L
+    }
 }

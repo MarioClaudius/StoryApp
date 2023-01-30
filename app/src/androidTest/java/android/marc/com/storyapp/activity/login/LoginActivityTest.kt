@@ -94,11 +94,14 @@ class LoginActivityTest {
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
 
+        onView(withId(android.R.id.button1)).perform(click())
+
         intended(hasComponent(MainActivity::class.java.name))
         onView(withId(R.id.logout)).check(matches(isDisplayed())).perform(click())
 
         intended(hasComponent(LoginActivity::class.java.name))
         onView(withId(R.id.img_camera_logo_login)).check(matches(isDisplayed()))
 
+        Intents.release()
     }
 }

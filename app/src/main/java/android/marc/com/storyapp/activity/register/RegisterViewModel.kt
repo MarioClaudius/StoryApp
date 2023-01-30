@@ -2,8 +2,6 @@ package android.marc.com.storyapp.activity.register
 
 import android.marc.com.storyapp.api.ApiConfig
 import android.marc.com.storyapp.model.BaseResponse
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

@@ -17,16 +17,15 @@ import android.marc.com.storyapp.helper.uriToFile
 import android.marc.com.storyapp.model.SessionPreference
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -85,15 +84,13 @@ class AddStoryActivity : AppCompatActivity() {
     ) { permissions ->
         when {
             permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
-                // Precise location access granted.
                 uploadStoryWithLocation()
             }
             permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
-                // Only approximate location access granted.
                 uploadStoryWithLocation()
             }
             else -> {
-                // No location access granted.
+                // No location access granted. Do nothing.
             }
         }
     }

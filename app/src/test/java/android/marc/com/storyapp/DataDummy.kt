@@ -1,7 +1,6 @@
 package android.marc.com.storyapp
 
 import android.marc.com.storyapp.model.Story
-import android.marc.com.storyapp.model.StoryListResponse
 
 object DataDummy {
     fun generateDummyStoryData(): List<Story> {

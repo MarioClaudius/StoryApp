@@ -4,7 +4,6 @@ import android.marc.com.storyapp.api.ApiService
 import android.marc.com.storyapp.database.RemoteKeys
 import android.marc.com.storyapp.database.StoryAppDatabase
 import android.marc.com.storyapp.model.Story
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState

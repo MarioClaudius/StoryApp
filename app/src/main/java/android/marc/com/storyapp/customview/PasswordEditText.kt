@@ -50,8 +50,12 @@ class PasswordEditText: AppCompatEditText {
                         }
                     }
 
-                }, 1000)
+                }, waitToCheckDuration)
             }
         })
+    }
+
+    companion object {
+        const val waitToCheckDuration = 1000L
     }
 }

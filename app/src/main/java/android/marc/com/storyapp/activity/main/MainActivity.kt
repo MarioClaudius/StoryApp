@@ -11,10 +11,8 @@ import android.marc.com.storyapp.activity.storydetail.StoryDetailActivity
 import android.marc.com.storyapp.adapter.StoryListAdapter
 import android.marc.com.storyapp.databinding.ActivityMainBinding
 import android.marc.com.storyapp.model.SessionPreference
-import android.marc.com.storyapp.model.Story
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,12 +21,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
